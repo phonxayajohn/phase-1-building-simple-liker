@@ -4,7 +4,37 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+function toggleHeart(heart) {
+  if (heart.innerText === EMPTY_HEART) {
+    heart.innerText = FULL_HEART;
+    heart.classList.add('activated-heart')
+  } else {
+    heart.innerText = EMPTY_HEART
+    heart.classList.remove('activated-heart')
+  }
+}
 
+const likeButtons = document.getElementsByClassName('like-glyph')
+
+for(let i=0; i < likeButtons.length; i++) {
+  const likeEvent = likeButtons[i]
+  likeEvent.addEventListener('click', () => {
+    mimicServerCall()
+      .then( () => {
+        toggleHeart(likeEvent)
+      })
+      .catch((error) => {
+        const modal = document.getElementById('modal')
+        const modalMessage = document.getElementById('modal-message')
+        modalMessage.innerText = error
+        modal.classList.remove('hidden')
+
+        setTimeout(() => {
+          modal.classList.add('hidden')
+        }, 3000);
+      })
+  })
+}
 
 
 //------------------------------------------------------------------------------
